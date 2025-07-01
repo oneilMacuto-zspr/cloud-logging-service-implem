@@ -1,0 +1,45 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "cds serve",
+      "request": "launch",
+      "type": "node",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "cds",
+      "args": [
+        "serve",
+        "--with-mocks",
+        "--in-memory?"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "OTEL_RESOURCE_ATTRIBUTES": "service.name=my-local-cap-app"
+      }
+    },
+    {
+      "name": "serve local logs telemetry",
+      "request": "launch",
+      "type": "node",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "cds",
+      "args": [
+        "serve",
+        "--with-mocks",
+        "--in-memory?",
+        "--profile",
+        "local-logs-telemetry"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "envFile": "${workspaceFolder}/.env",
+      "env": {
+        "CDS_LOG_FORMAT": "json"
+      }
+    }
+  ]
+}

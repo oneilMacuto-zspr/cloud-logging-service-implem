@@ -1,0 +1,46 @@
+_schema-version: 3.3.0
+ID: new-cap-project
+version: 1.0.4
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+        - npm run build
+modules:
+  - name: new-cap-project-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      instances: 1
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: new-cap-hdi
+      - name: my-xsuaa-service
+      - name: new-sap-cloud-logging-instance
+
+  - name: new-cap-project-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: new-cap-hdi
+
+resources:
+  - name: new-cap-hdi
+    type: org.cloudfoundry.existing-service
+  - name: my-xsuaa-service
+    type: org.cloudfoundry.existing-service
+  - name: new-sap-cloud-logging-instance
+    type: org.cloudfoundry.existing-service
