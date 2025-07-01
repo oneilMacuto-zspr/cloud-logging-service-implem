@@ -13,12 +13,12 @@ module.exports = class CatalogService extends cds.ApplicationService {
         async function getData(req: Request) {
             try {
                 const data = await cds.run(SELECT.from(cds.entities.Books))
-                LOG.info ("log from locally run app")
+                LOG.info("log from locally run app")
                 LOG.info("getData");
                 LOG.info(JSON.stringify(data));
                 LOG.error("getData - sample error")
                 req.reply("getData");
-            } catch(error: any) {
+            } catch (error: any) {
                 LOG.error(error.message);
             }
         }
